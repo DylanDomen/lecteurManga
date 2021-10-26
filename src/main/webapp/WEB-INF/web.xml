@@ -9,4 +9,20 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>Signup</display-name>
+    <servlet-name>Signup</servlet-name>
+    <servlet-class>lecteurManga.servlet.Signup</servlet-class>
+        <multipart-config>
+            <location>/Users/sautr</location> 
+            <max-file-size>10485760</max-file-size> 
+            <max-request-size>52428800</max-request-size> 
+            <file-size-threshold>1048576</file-size-threshold>
+        </multipart-config>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Signup</servlet-name>
+    <url-pattern>/Signup</url-pattern>
+  </servlet-mapping>
 </web-app>
