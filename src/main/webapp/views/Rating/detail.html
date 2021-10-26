@@ -1,0 +1,41 @@
+<header ng-switch on="$location.path().indexOf('/Ratings/new') > -1">
+    <h3 ng-switch-when="true">Create a new Rating</h3>
+    <h3 ng-switch-when="false">View or edit Rating</h3>
+</header>
+<form id="RatingForm" name="RatingForm" class="form-horizontal" role="form">
+    
+    <div class="form-group" ng-class="{'has-error': RatingForm.rating.$invalid}">
+        <label for="rating" class="col-sm-2 control-label">Rating</label>
+        <div id="ratingControls" class="col-sm-10">
+            <input id="rating" name="rating" type="number" class="form-control" ng-model="rating.rating" placeholder="Enter the Rating Rating"></input>
+            <span class="help-block error" ng-show="RatingForm.rating.$error.number">not a number</span>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': RatingForm.manga_Rating.$invalid}">
+        <label for="manga_Rating" class="col-sm-2 control-label">Manga_ Rating</label>
+        <div id="manga_RatingControls" class="col-sm-10">
+        <select id="manga_Rating" name="manga_Rating" class="form-control" ng-model="manga_RatingSelection" ng-options="m.text for m in manga_RatingSelectionList"  >
+            <option value="">Choose a Manga</option>
+        </select>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': RatingForm.account.$invalid}">
+        <label for="account" class="col-sm-2 control-label">Account</label>
+        <div id="accountControls" class="col-sm-10">
+        <select id="account" name="account" class="form-control" ng-model="accountSelection" ng-options="a.text for a in accountSelectionList"  >
+            <option value="">Choose a Account</option>
+        </select>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button id="saveRating" name="saveRating" class="btn btn-primary" ng-disabled="isClean() || RatingForm.$invalid" ng-click="save()"><span class="glyphicon glyphicon-ok-sign"></span> Save</button>
+            <button id="cancel" name="cancel" class="btn btn-default" ng-click="cancel()"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</button>
+            <button id="deleteRating" name="deleteRating" class="btn btn-danger" ng-show="rating.id" ng-click="remove()"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+        </div>
+    </div>
+</form>

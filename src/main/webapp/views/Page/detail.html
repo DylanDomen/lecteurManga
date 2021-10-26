@@ -1,0 +1,63 @@
+<header ng-switch on="$location.path().indexOf('/Pages/new') > -1">
+    <h3 ng-switch-when="true">Create a new Page</h3>
+    <h3 ng-switch-when="false">View or edit Page</h3>
+</header>
+<form id="PageForm" name="PageForm" class="form-horizontal" role="form">
+    
+    <div class="form-group" ng-class="{'has-error': PageForm.image_path.$invalid}">
+        <label for="image_path" class="col-sm-2 control-label">Image_path</label>
+        <div id="image_pathControls" class="col-sm-10">
+            <input id="image_path" name="image_path" type="text" class="form-control" ng-model="page.image_path" placeholder="Enter the Page Image_path"></input>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': PageForm.page_number.$invalid}">
+        <label for="page_number" class="col-sm-2 control-label">Page_number</label>
+        <div id="page_numberControls" class="col-sm-10">
+            <input id="page_number" name="page_number" type="number" class="form-control" ng-model="page.page_number" placeholder="Enter the Page Page_number"></input>
+            <span class="help-block error" ng-show="PageForm.page_number.$error.number">not a number</span>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': PageForm.updated_date.$invalid}">
+        <label for="updated_date" class="col-sm-2 control-label">Updated_date</label>
+        <div id="updated_dateControls" class="col-sm-10">
+            <datetime id="updated_date" name="updated_date" ng-model="page.updated_date" placeholder="Enter the Page Updated_date"></datetime>
+            <span class="help-block error" ng-show="PageForm.updated_date.$error.datetimeFormat">does not match format "yyyy-MM-dd hh:mm:ss" (e.g. 2013-12-01 22:00:00)</span>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': PageForm.deleted_date.$invalid}">
+        <label for="deleted_date" class="col-sm-2 control-label">Deleted_date</label>
+        <div id="deleted_dateControls" class="col-sm-10">
+            <datetime id="deleted_date" name="deleted_date" ng-model="page.deleted_date" placeholder="Enter the Page Deleted_date"></datetime>
+            <span class="help-block error" ng-show="PageForm.deleted_date.$error.datetimeFormat">does not match format "yyyy-MM-dd hh:mm:ss" (e.g. 2013-12-01 22:00:00)</span>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': PageForm.created_date.$invalid}">
+        <label for="created_date" class="col-sm-2 control-label">Created_date</label>
+        <div id="created_dateControls" class="col-sm-10">
+            <datetime id="created_date" name="created_date" ng-model="page.created_date" placeholder="Enter the Page Created_date"></datetime>
+            <span class="help-block error" ng-show="PageForm.created_date.$error.datetimeFormat">does not match format "yyyy-MM-dd hh:mm:ss" (e.g. 2013-12-01 22:00:00)</span>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': PageForm.chapter.$invalid}">
+        <label for="chapter" class="col-sm-2 control-label">Chapter</label>
+        <div id="chapterControls" class="col-sm-10">
+        <select id="chapter" name="chapter" class="form-control" ng-model="chapterSelection" ng-options="c.text for c in chapterSelectionList"  >
+            <option value="">Choose a Chapter</option>
+        </select>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button id="savePage" name="savePage" class="btn btn-primary" ng-disabled="isClean() || PageForm.$invalid" ng-click="save()"><span class="glyphicon glyphicon-ok-sign"></span> Save</button>
+            <button id="cancel" name="cancel" class="btn btn-default" ng-click="cancel()"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</button>
+            <button id="deletePage" name="deletePage" class="btn btn-danger" ng-show="page.id" ng-click="remove()"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+        </div>
+    </div>
+</form>
