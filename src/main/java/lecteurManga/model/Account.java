@@ -1,5 +1,6 @@
 package lecteurManga.model;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Entity;
@@ -26,7 +27,11 @@ public class Account implements Serializable {
 	private String email;
 	private String password;
 	private String image_path;
-
+	private Boolean is_deleted;
+	private Date created_date;
+	private Date updated_date;
+	private Date deleted_date;
+	
 	@ManyToOne
 	@JsonBackReference(value = "role")
 	private Role role;
@@ -37,6 +42,43 @@ public class Account implements Serializable {
 
 	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "accounts")
 	private Set<Manga> manga;
+	
+	
+	public Account() {
+		super();
+	}
+	
+	public Boolean getIs_deleted() {
+		return is_deleted;
+	}
+
+	public void setIs_deleted(Boolean is_deleted) {
+		this.is_deleted = is_deleted;
+	}
+
+	public Date getCreated_date() {
+		return created_date;
+	}
+
+	public void setCreated_date(Date created_date) {
+		this.created_date = created_date;
+	}
+
+	public Date getUpdated_date() {
+		return updated_date;
+	}
+
+	public void setUpdated_date(Date updated_date) {
+		this.updated_date = updated_date;
+	}
+
+	public Date getDeleted_date() {
+		return deleted_date;
+	}
+
+	public void setDeleted_date(Date deleted_date) {
+		this.deleted_date = deleted_date;
+	}
 
 	public void addFavoris(Manga mangas) {
 		manga.add(mangas);
@@ -46,9 +88,6 @@ public class Account implements Serializable {
 		ratings.add(rating);
 	}
 
-	public Account() {
-		super();
-	}
 	public Integer getId() {
 		return id;
 	}
