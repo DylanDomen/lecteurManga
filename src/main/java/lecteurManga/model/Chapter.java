@@ -13,11 +13,12 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+
 @Entity
-public class Chapter implements Serializable{
+public class Chapter implements Serializable {
 
 	private static final long serialVersionUID = -6227473343692781660L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -26,19 +27,19 @@ public class Chapter implements Serializable{
 	private Date deleted_date;
 	private Date updated_date;
 	private Float chapter_number;
-	
+
 	@ManyToOne
-	@JsonBackReference
+	@JsonBackReference(value = "chapter")
 	private Manga manga;
 
-	@OneToMany(fetch = FetchType.EAGER,mappedBy = "chapter")
-    @JsonManagedReference
-    private Set<Page> pages;
-	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "chapter")
+	@JsonManagedReference(value = "page")
+	private Set<Page> pages;
+
 	public void addPage(Page page) {
 		pages.add(page);
 	}
-	
+
 	public Chapter() {
 		super();
 	}
@@ -83,7 +84,6 @@ public class Chapter implements Serializable{
 		this.updated_date = updated_date;
 	}
 
-	
 	public Float getChapter_number() {
 		return chapter_number;
 	}
@@ -101,14 +101,13 @@ public class Chapter implements Serializable{
 	}
 
 	public Set<Page> getPages() {
-		if(pages ==null) pages = new HashSet<>();
+		if (pages == null)
+			pages = new HashSet<>();
 		return pages;
 	}
 
 	public void setPages(Set<Page> pages) {
 		this.pages = pages;
 	}
-	
-	
 
 }

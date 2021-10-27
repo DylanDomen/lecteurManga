@@ -1,0 +1,73 @@
+<header ng-switch on="$location.path().indexOf('/Mangas/new') > -1">
+    <h3 ng-switch-when="true">Create a new Manga</h3>
+    <h3 ng-switch-when="false">View or edit Manga</h3>
+</header>
+<form id="MangaForm" name="MangaForm" class="form-horizontal" role="form">
+    
+    <div class="form-group" ng-class="{'has-error': MangaForm.title.$invalid}">
+        <label for="title" class="col-sm-2 control-label">Title</label>
+        <div id="titleControls" class="col-sm-10">
+            <input id="title" name="title" type="text" class="form-control" ng-model="manga.title" placeholder="Enter the Manga Title"></input>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': MangaForm.summary.$invalid}">
+        <label for="summary" class="col-sm-2 control-label">Summary</label>
+        <div id="summaryControls" class="col-sm-10">
+            <input id="summary" name="summary" type="text" class="form-control" ng-model="manga.summary" placeholder="Enter the Manga Summary"></input>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': MangaForm.cover_name.$invalid}">
+        <label for="cover_name" class="col-sm-2 control-label">Cover_name</label>
+        <div id="cover_nameControls" class="col-sm-10">
+            <input id="cover_name" name="cover_name" type="text" class="form-control" ng-model="manga.cover_name" placeholder="Enter the Manga Cover_name"></input>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': MangaForm.update_date.$invalid}">
+        <label for="update_date" class="col-sm-2 control-label">Update_date</label>
+        <div id="update_dateControls" class="col-sm-10">
+            <datetime id="update_date" name="update_date" ng-model="manga.update_date" placeholder="Enter the Manga Update_date"></datetime>
+            <span class="help-block error" ng-show="MangaForm.update_date.$error.datetimeFormat">does not match format "yyyy-MM-dd hh:mm:ss" (e.g. 2013-12-01 22:00:00)</span>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': MangaForm.is_deleted.$invalid}">
+        <label for="is_deleted" class="col-sm-2 control-label">Is_deleted</label>
+        <div id="is_deletedControls" class="col-sm-10">
+            <input id="is_deleted" name="is_deleted" type="checkbox" class="checkbox" ng-model="manga.is_deleted" placeholder="Enter the Manga Is_deleted"></input>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': MangaForm.deleted_date.$invalid}">
+        <label for="deleted_date" class="col-sm-2 control-label">Deleted_date</label>
+        <div id="deleted_dateControls" class="col-sm-10">
+            <datetime id="deleted_date" name="deleted_date" ng-model="manga.deleted_date" placeholder="Enter the Manga Deleted_date"></datetime>
+            <span class="help-block error" ng-show="MangaForm.deleted_date.$error.datetimeFormat">does not match format "yyyy-MM-dd hh:mm:ss" (e.g. 2013-12-01 22:00:00)</span>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': MangaForm.created_date.$invalid}">
+        <label for="created_date" class="col-sm-2 control-label">Created_date</label>
+        <div id="created_dateControls" class="col-sm-10">
+            <datetime id="created_date" name="created_date" ng-model="manga.created_date" placeholder="Enter the Manga Created_date"></datetime>
+            <span class="help-block error" ng-show="MangaForm.created_date.$error.datetimeFormat">does not match format "yyyy-MM-dd hh:mm:ss" (e.g. 2013-12-01 22:00:00)</span>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': MangaForm.author.$invalid}">
+        <label for="author" class="col-sm-2 control-label">Author</label>
+        <div id="authorControls" class="col-sm-10">
+            <input id="author" name="author" type="text" class="form-control" ng-model="manga.author" placeholder="Enter the Manga Author"></input>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button id="saveManga" name="saveManga" class="btn btn-primary" ng-disabled="isClean() || MangaForm.$invalid" ng-click="save()"><span class="glyphicon glyphicon-ok-sign"></span> Save</button>
+            <button id="cancel" name="cancel" class="btn btn-default" ng-click="cancel()"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</button>
+            <button id="deleteManga" name="deleteManga" class="btn btn-danger" ng-show="manga.id" ng-click="remove()"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+        </div>
+    </div>
+</form>

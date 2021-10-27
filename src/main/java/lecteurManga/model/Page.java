@@ -8,11 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+
 @Entity
-public class Page implements Serializable{
+public class Page implements Serializable {
 
 	private static final long serialVersionUID = 7710634288503261378L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -21,9 +22,9 @@ public class Page implements Serializable{
 	private Date updated_date;
 	private Date deleted_date;
 	private Date created_date;
-	
+
 	@ManyToOne
-	@JsonBackReference
+	@JsonBackReference(value = "page")
 	private Chapter chapter;
 
 	public Page() {
@@ -85,6 +86,5 @@ public class Page implements Serializable{
 	public void setChapter(Chapter chapter) {
 		this.chapter = chapter;
 	}
-	
-	
+
 }

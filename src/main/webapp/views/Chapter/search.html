@@ -1,0 +1,87 @@
+<div class="form-horizontal">
+    <h3>Create a new Chapter</h3>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-sm-2">
+            <a id="Create" name="Create" class="btn btn-primary" href="#/Chapters/new"><span class="glyphicon glyphicon-plus-sign"></span> Create</a>
+        </div>
+    </div>
+</div>
+<hr/>
+<div>
+    <h3>Search for Chapters</h3>
+    <form id="ChapterSearch" class="form-horizontal">
+        
+    <div class="form-group">
+        <label for="title" class="col-sm-2 control-label">Title</label>
+        <div class="col-sm-10">
+            <input id="title" name="title" class="form-control" type="text" ng-model="search.title" placeholder="Enter the Chapter Title"></input>
+        </div>
+    </div>
+
+
+
+
+    <div class="form-group">
+        <label for="chapter_number" class="col-sm-2 control-label">Chapter_number</label>
+        <div class="col-sm-10">
+            <input id="chapter_number" name="chapter_number" class="form-control" type="text" ng-model="search.chapter_number" placeholder="Enter the Chapter Chapter_number"></input>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="manga" class="col-sm-2 control-label">Manga</label>
+        <div class="col-sm-10">
+            <select id="manga" name="manga" class="form-control" ng-model="search.manga" ng-options="m as m.title for m in mangaList">
+                <option value="">Choose a Manga</option>
+            </select>
+        </div>
+    </div>
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-sm-10">
+                <a id="Search" name="Search" class="btn btn-primary" ng-click="performSearch()"><span class="glyphicon glyphicon-search"></span> Search</a>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="search-results">
+        <div class="table-responsive">
+        <table class="table table-responsive table-bordered table-striped clearfix">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Created_date</th>
+                    <th>Deleted_date</th>
+                    <th>Updated_date</th>
+                    <th>Chapter_number</th>
+                    <th>Manga</th>
+                </tr>
+            </thead>
+            <tbody id="search-results-body">
+                <tr ng-repeat="result in filteredResults | startFrom:currentPage*pageSize | limitTo:pageSize">
+                    <td><a href="#/Chapters/edit/{{result.id}}">{{result.title}}</a></td>
+                    <td><a href="#/Chapters/edit/{{result.id}}">{{result.created_date| date:'yyyy-MM-dd HH:mm:ss Z'}}</a></td>
+                    <td><a href="#/Chapters/edit/{{result.id}}">{{result.deleted_date| date:'yyyy-MM-dd HH:mm:ss Z'}}</a></td>
+                    <td><a href="#/Chapters/edit/{{result.id}}">{{result.updated_date| date:'yyyy-MM-dd HH:mm:ss Z'}}</a></td>
+                    <td><a href="#/Chapters/edit/{{result.id}}">{{result.chapter_number}}</a></td>
+                        <td><a href="#/Chapters/edit/{{result.id}}">{{result.manga.title}}</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+        <ul class="pagination pagination-centered">
+        <li ng-class="{disabled:currentPage == 0}">
+            <a id="prev" href ng-click="previous()">«</a>
+        </li>
+        <li ng-repeat="n in pageRange" ng-class="{active:currentPage == n}" ng-click="setPage(n)">
+            <a href ng-bind="n + 1">1</a>
+        </li>
+        <li ng-class="{disabled: currentPage == (numberOfPages() - 1)}">
+            <a id="next" href ng-click="next()">»</a>
+        </li>
+    </ul>
+
+</div>
