@@ -34,10 +34,14 @@ public class RatingEndpoint {
 	@POST
 	@Consumes("application/json")
 	public Response create(Rating entity) {
-		em.persist(entity);
-		return Response.created(
-				UriBuilder.fromResource(RatingEndpoint.class)
-						.path(String.valueOf(entity.getId())).build()).build();
+		if(entity.getRating() != null && entity.getManga_Rating() != null && entity.getAccount() != null) {
+			em.persist(entity);
+			return Response.created(
+					UriBuilder.fromResource(RatingEndpoint.class)
+							.path(String.valueOf(entity.getId())).build()).build();
+		}else {
+			return Response.status(Response.Status.BAD_REQUEST).entity("Erreur : Les champs pour la création d'un favoris n'ont pas été remplis correctement").build();
+		}
 	}
 
 	@DELETE
@@ -106,13 +110,17 @@ public class RatingEndpoint {
 		if (em.find(Rating.class, id) == null) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
-		try {
-			entity = em.merge(entity);
-		} catch (OptimisticLockException e) {
-			return Response.status(Response.Status.CONFLICT)
-					.entity(e.getEntity()).build();
+		if(entity.getRating() != null && entity.getManga_Rating() != null && entity.getAccount() != null) {
+			try {
+				entity = em.merge(entity);
+			} catch (OptimisticLockException e) {
+				return Response.status(Response.Status.CONFLICT)
+						.entity(e.getEntity()).build();
+			}
+	
+			return Response.noContent().build();
+		}else {
+			return Response.status(Response.Status.BAD_REQUEST).entity("Erreur : Les champs pour mise à jour d'un favoris n'ont pas été remplis correctement").build();
 		}
-
-		return Response.noContent().build();
 	}
 }
