@@ -2,7 +2,7 @@
     <h3 ng-switch-when="true">Create a new Account</h3>
     <h3 ng-switch-when="false">View or edit Account</h3>
 </header>
-<form id="AccountForm" name="AccountForm" class="form-horizontal" role="form">
+<form id="AccountForm" enctype="multipart/form-data" name="AccountForm" class="form-horizontal" role="form">
     
     <div class="form-group" ng-class="{'has-error': AccountForm.username.$invalid}">
         <label for="username" class="col-sm-2 control-label">Username</label>
@@ -28,7 +28,7 @@
     <div class="form-group" ng-class="{'has-error': AccountForm.image_path.$invalid}">
         <label for="image_path" class="col-sm-2 control-label">Image_path</label>
         <div id="image_pathControls" class="col-sm-10">
-            <input id="image_path" name="image_path" type="text" class="form-control" ng-model="account.image_path" placeholder="Enter the Account Image_path"></input>
+            <input id="image_path" name="image_path" type="file" class="form-control" ng-model="account.image_path"  accept=".jpg, .jpeg, .png" placeholder="Upload file"></input>
         </div>
     </div>
 

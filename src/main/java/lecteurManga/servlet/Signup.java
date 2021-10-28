@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -17,16 +19,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
+
+
+import lecteurManga.model.Account;
 
 @WebServlet("/lecteurManga")
 @MultipartConfig
 public class Signup extends HttpServlet {
+	
 
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 6938585477374990285L;
-	  private final static String serverPath = "/documents/lecteurManga";
+	//private final static String serverPath = "/documents/lecteurManga";
 
 
 	/**
@@ -48,10 +57,12 @@ public class Signup extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String serverPath = getServletContext().getRealPath("/");
 
       
         final Part filePart = request.getPart("fichier");
         String fileName = getFileName(filePart);
+
      
 
         OutputStream out = null;
@@ -68,7 +79,20 @@ public class Signup extends HttpServlet {
           while ((read = filecontent.read(bytes)) != -1) {
             out.write(bytes, 0, read);
           }
-          writer.println("New file " + fileName + " created at " + serverPath);
+         // writer.println("New file " + fileName + " created at " + serverPath);
+            String nom = fileName;
+            String nom2 = serverPath;
+
+        
+           request.setAttribute("nom", nom);
+            request.setAttribute("nom2", nom2);
+            
+
+    		  this.getServletContext().getRequestDispatcher("/WEB-INF/view_img.jsp").forward(request, response);
+    	
+
+
+
      
         } catch (FileNotFoundException fne) {
           writer.println("Missing file or no insufficient permissions.");
@@ -88,9 +112,8 @@ public class Signup extends HttpServlet {
 	}
 
 	
-	
 
-    
+
 	 private String getFileName(Part filePart) {
 		    String header = filePart.getHeader("content-disposition");
 		    String name = header.substring(header.indexOf("filename=\"")+10);

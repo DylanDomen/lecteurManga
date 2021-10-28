@@ -25,7 +25,9 @@ public class Account implements Serializable {
 	private String username;
 	private String email;
 	private String password;
-	private String image_path;
+	//private String image_path;
+	private byte[] image_path;
+
 
 	@ManyToOne
 	@JsonBackReference(value = "role")
@@ -74,13 +76,17 @@ public class Account implements Serializable {
 		this.password = password;
 	}
 
-	public String getImage_path() {
+	
+
+	public byte[] getImage_path() {
 		return image_path;
 	}
 
-	public void setImage_path(String image_path) {
+	public void setImage_path(byte[] image_path) {
 		this.image_path = image_path;
 	}
+
+	
 
 	public Role getRole() {
 		return role;
