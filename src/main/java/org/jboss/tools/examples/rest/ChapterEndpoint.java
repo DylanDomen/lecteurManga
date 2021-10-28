@@ -34,10 +34,14 @@ public class ChapterEndpoint {
 	@POST
 	@Consumes("application/json")
 	public Response create(Chapter entity) {
-		em.persist(entity);
-		return Response.created(
-				UriBuilder.fromResource(ChapterEndpoint.class)
-						.path(String.valueOf(entity.getId())).build()).build();
+		if(entity.getTitle() != null && entity.getCreated_date() != null && entity.getChapter_number() != null && entity.getManga() != null) {
+			em.persist(entity);
+			return Response.created(
+					UriBuilder.fromResource(ChapterEndpoint.class)
+							.path(String.valueOf(entity.getId())).build()).build();
+		}else {
+			return Response.status(Response.Status.BAD_REQUEST).entity("Erreur : Les champs pour la création du chapitre n'ont pas été remplis correctement").build();
+		}
 	}
 
 	@DELETE
@@ -106,13 +110,16 @@ public class ChapterEndpoint {
 		if (em.find(Chapter.class, id) == null) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
-		try {
-			entity = em.merge(entity);
-		} catch (OptimisticLockException e) {
-			return Response.status(Response.Status.CONFLICT)
-					.entity(e.getEntity()).build();
+		if(entity.getTitle() != null && entity.getCreated_date() != null && entity.getUpdated_date() != null && entity.getChapter_number() != null && entity.getManga() != null) {
+			try {
+				entity = em.merge(entity);
+			} catch (OptimisticLockException e) {
+				return Response.status(Response.Status.CONFLICT)
+						.entity(e.getEntity()).build();
+			}
+			return Response.noContent().build();
+		}else {
+			return Response.status(Response.Status.BAD_REQUEST).entity("Erreur : Les champs pour la mise à jour du chapitre n'ont pas été remplis correctement").build();
 		}
-
-		return Response.noContent().build();
 	}
 }
