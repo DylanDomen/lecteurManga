@@ -1,6 +1,7 @@
 package org.jboss.tools.examples.rest;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -135,7 +136,15 @@ public class MangaEndpoint {
 		if(account_id != null && manga_id != null) {
 			Manga m = em.find(Manga.class, manga_id);
 			Account a = em.find(Account.class, account_id);
-			m.addMangaToFavorite(a);
+			
+			Set<Manga> favorites = a.getManga();
+			
+			if(favorites.contains(m)) {
+				m.removeMangaToFavorite(a);
+			} else {
+				m.addMangaToFavorite(a);
+			}
+			
 			try {
 				em.merge(m);
 			} catch (OptimisticLockException e) {
