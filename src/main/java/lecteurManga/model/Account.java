@@ -60,7 +60,7 @@ public class Account implements Serializable {
 	private Set<Rating> ratings;
 
 	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "accounts")
-	@JsonManagedReference(value = "accounts")
+	
 	private Set<Manga> manga;
 	
 	
