@@ -11,7 +11,7 @@ and open the template in the editor.
       http://www.jboss.com/xml/ns/javaee
       http://www.jboss.org/j2ee/schema/jboss-web_5_1.xsd">
       
-      <security-domain>lecteurMangaDomain</security-domain>
+      <!-- <security-domain>lecteurMangaDomain</security-domain> -->
     <context-root>/lecteurManga</context-root>
 	
 </jboss-web>

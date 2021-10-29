@@ -45,6 +45,12 @@ public class Account implements Serializable {
 	private String password;
 	//private String image_path;
 	private byte[] image_path;
+	private Boolean is_deleted;
+	private Date created_date;
+	private Date updated_date;
+	private Date deleted_date;
+	private String salt;
+	private Integer iteration_count;
 
 
 	@ManyToOne
