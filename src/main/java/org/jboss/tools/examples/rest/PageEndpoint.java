@@ -34,10 +34,14 @@ public class PageEndpoint {
 	@POST
 	@Consumes("application/json")
 	public Response create(Page entity) {
-		em.persist(entity);
-		return Response.created(
-				UriBuilder.fromResource(PageEndpoint.class)
-						.path(String.valueOf(entity.getId())).build()).build();
+		if(entity.getImage_path() != null && entity.getPage_number() != null && entity.getCreated_date() != null && entity.getChapter() != null) {
+			em.persist(entity);
+			return Response.created(
+					UriBuilder.fromResource(PageEndpoint.class)
+							.path(String.valueOf(entity.getId())).build()).build();
+		}else {
+			return Response.status(Response.Status.BAD_REQUEST).entity("Erreur : Les champs pour la création de la page n'ont pas été remplis correctement").build();
+		}
 	}
 
 	@DELETE
@@ -106,13 +110,17 @@ public class PageEndpoint {
 		if (em.find(Page.class, id) == null) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
-		try {
-			entity = em.merge(entity);
-		} catch (OptimisticLockException e) {
-			return Response.status(Response.Status.CONFLICT)
-					.entity(e.getEntity()).build();
+		if(entity.getImage_path() != null && entity.getPage_number() != null && entity.getCreated_date() != null && entity.getUpdated_date() != null && entity.getChapter() != null) {
+			try {
+				entity = em.merge(entity);
+			} catch (OptimisticLockException e) {
+				return Response.status(Response.Status.CONFLICT)
+						.entity(e.getEntity()).build();
+			}
+	
+			return Response.noContent().build();
+		}else {
+			return Response.status(Response.Status.BAD_REQUEST).entity("Erreur : Les champs pour la mise à jour de la page n'ont pas été remplis correctement").build();
 		}
-
-		return Response.noContent().build();
 	}
 }

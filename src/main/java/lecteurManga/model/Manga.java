@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
@@ -40,7 +42,8 @@ public class Manga implements Serializable {
 	@JsonManagedReference(value = "manga_rating")
 	private Set<Rating> ratings;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JsonBackReference(value = "manga")
 	private Set<Account> accounts;
 
 	public void addFavoris_account(Account account) {

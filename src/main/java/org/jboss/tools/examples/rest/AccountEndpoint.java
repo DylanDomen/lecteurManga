@@ -34,10 +34,15 @@ public class AccountEndpoint {
 	@POST
 	@Consumes("application/json")
 	public Response create(Account entity) {
-		em.persist(entity);
-		return Response.created(
-				UriBuilder.fromResource(AccountEndpoint.class)
-						.path(String.valueOf(entity.getId())).build()).build();
+		if( entity.getUsername() != null && entity.getEmail() != null && entity.getPassword() != null && entity.getRole() != null ) {
+			em.persist(entity);
+			return Response.created(
+					UriBuilder.fromResource(AccountEndpoint.class)
+							.path(String.valueOf(entity.getId())).build()).build();
+		}else {
+			return Response.status(Response.Status.BAD_REQUEST).entity("Erreur : Les champs pour la création de compte n'ont pas été remplis correctement").build();
+		}
+		
 	}
 
 	@DELETE
@@ -106,13 +111,17 @@ public class AccountEndpoint {
 		if (em.find(Account.class, id) == null) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
-		try {
-			entity = em.merge(entity);
-		} catch (OptimisticLockException e) {
-			return Response.status(Response.Status.CONFLICT)
-					.entity(e.getEntity()).build();
-		}
-
-		return Response.noContent().build();
+		
+			if( entity.getUsername() != null && entity.getEmail() != null && entity.getPassword() != null && entity.getRole() != null ) {
+				try {
+					entity = em.merge(entity);
+				} catch (OptimisticLockException e) {
+					return Response.status(Response.Status.CONFLICT)
+							.entity(e.getEntity()).build();
+				}
+				return Response.noContent().build();
+			}else {
+				return Response.status(Response.Status.BAD_REQUEST).entity("Erreur : Les champs pour la mise à jour du compte n'ont pas été remplis correctement").build();
+			}
 	}
 }
