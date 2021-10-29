@@ -20,6 +20,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
+
+import lecteurManga.model.Account;
 import lecteurManga.model.Manga;
 
 /**
@@ -123,5 +125,27 @@ public class MangaEndpoint {
 			}else {
 				return Response.status(Response.Status.BAD_REQUEST).entity("Erreur : Les champs pour la mise à jour du manga n'ont pas été remplis correctement").build();
 			}
+	}
+	
+	@POST
+	@Path("/favoris/account/{account_id}/manga/{manga_id}")
+	@Produces("application/json")
+	@Consumes("application/json")
+	public Response addFavorite(@PathParam("account_id") Integer account_id, @PathParam("manga_id") Integer manga_id) {
+		if(account_id != null && manga_id != null) {
+			Manga m = em.find(Manga.class, manga_id);
+			Account a = em.find(Account.class, account_id);
+			m.addMangaToFavorite(a);
+			try {
+				em.merge(m);
+			} catch (OptimisticLockException e) {
+				return Response.status(Response.Status.CONFLICT)
+						.entity(e.getEntity()).build();
+			}
+	        return Response.ok("Favoris ajouté").build();
+		}else {
+			return Response.status(Response.Status.BAD_REQUEST).entity("Erreur : Les 2 id n'ont pas été renseigné correctement").build();
+
+		}
 	}
 }

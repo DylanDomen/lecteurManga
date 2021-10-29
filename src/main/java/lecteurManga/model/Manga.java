@@ -42,6 +42,7 @@ public class Manga implements Serializable {
 	@JsonManagedReference(value = "manga_rating")
 	private Set<Rating> ratings;
 
+  
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JsonBackReference(value = "manga")
 	private Set<Account> accounts;
@@ -160,6 +161,9 @@ public class Manga implements Serializable {
 
 	public void setAccounts(Set<Account> accounts) {
 		this.accounts = accounts;
+	}
+	public void addMangaToFavorite(Account account) {
+		this.getAccounts().add(account);
 	}
 
 }
