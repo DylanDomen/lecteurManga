@@ -34,10 +34,15 @@ public class MangaEndpoint {
 	@POST
 	@Consumes("application/json")
 	public Response create(Manga entity) {
-		em.persist(entity);
-		return Response.created(
-				UriBuilder.fromResource(MangaEndpoint.class)
-						.path(String.valueOf(entity.getId())).build()).build();
+		if(entity.getTitle() != null && entity.getCover_name() != null && entity.getCreated_date() != null && entity.getAuthor() != null) {
+			em.persist(entity);
+			return Response.created(
+					UriBuilder.fromResource(MangaEndpoint.class)
+							.path(String.valueOf(entity.getId())).build()).build();
+		}else {
+			return Response.status(Response.Status.BAD_REQUEST).entity("Erreur : Les champs pour la création du manga n'ont pas été remplis correctement").build();
+		}
+		
 	}
 
 	@DELETE
@@ -106,13 +111,17 @@ public class MangaEndpoint {
 		if (em.find(Manga.class, id) == null) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
-		try {
-			entity = em.merge(entity);
-		} catch (OptimisticLockException e) {
-			return Response.status(Response.Status.CONFLICT)
-					.entity(e.getEntity()).build();
-		}
-
-		return Response.noContent().build();
+		
+			if(entity.getTitle() != null && entity.getCover_name() != null && entity.getCreated_date() != null && entity.getUpdate_date() != null && entity.getAuthor() != null) {
+				try {
+					entity = em.merge(entity);
+				} catch (OptimisticLockException e) {
+					return Response.status(Response.Status.CONFLICT)
+							.entity(e.getEntity()).build();
+				}
+				return Response.noContent().build();
+			}else {
+				return Response.status(Response.Status.BAD_REQUEST).entity("Erreur : Les champs pour la mise à jour du manga n'ont pas été remplis correctement").build();
+			}
 	}
 }

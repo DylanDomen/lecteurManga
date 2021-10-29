@@ -34,10 +34,15 @@ public class RoleEndpoint {
 	@POST
 	@Consumes("application/json")
 	public Response create(Role entity) {
-		em.persist(entity);
-		return Response.created(
-				UriBuilder.fromResource(RoleEndpoint.class)
-						.path(String.valueOf(entity.getId())).build()).build();
+		if(entity.getName() != null) {
+			em.persist(entity);
+			return Response.created(
+					UriBuilder.fromResource(RoleEndpoint.class)
+							.path(String.valueOf(entity.getId())).build()).build();
+		}else {
+			return Response.status(Response.Status.BAD_REQUEST).entity("Erreur : Le nom du role n'a pas été renseigné").build();
+		}
+		
 	}
 
 	@DELETE
@@ -106,13 +111,17 @@ public class RoleEndpoint {
 		if (em.find(Role.class, id) == null) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
-		try {
-			entity = em.merge(entity);
-		} catch (OptimisticLockException e) {
-			return Response.status(Response.Status.CONFLICT)
-					.entity(e.getEntity()).build();
-		}
-
-		return Response.noContent().build();
+		
+			if(entity.getName() != null) {
+				try {
+					entity = em.merge(entity);
+				} catch (OptimisticLockException e) {
+					return Response.status(Response.Status.CONFLICT)
+							.entity(e.getEntity()).build();
+				}
+				return Response.noContent().build();
+			}else {
+				return Response.status(Response.Status.BAD_REQUEST).entity("Erreur : Le nom du role n'a pas été renseigné").build();
+			}
 	}
 }
