@@ -162,5 +162,8 @@ public class Manga implements Serializable {
 	public void setAccounts(Set<Account> accounts) {
 		this.accounts = accounts;
 	}
+	public void addMangaToFavorite(Account account) {
+		this.getAccounts().add(account);
+	}
 
 }
